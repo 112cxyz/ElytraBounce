@@ -21,7 +21,12 @@ jobs:
         distribution: 'temurin'
     - name: Build with Maven
       run: mvn clean package
-    - uses: actions/upload-artifact@v1
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        name: artifact
-        path: target/ForceElytra-1.0-SNAPSHOT-jar-with-dependencies.jar
+        upload_url: ${{ github.event.release.upload_url }} # This pulls from the CREATE RELEASE event above, referencing it's URL
+        asset_path: ./target/ForceElytra-1.0-SNAPSHOT-jar-with-dependencies.jar
+        asset_name: ForceElytra-1.0-SNAPSHOT-jar-with-dependencies.jar
+        asset_content_type: application/java-archive
