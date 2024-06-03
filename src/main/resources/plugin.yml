@@ -1,0 +1,16 @@
+name: ForceElytra
+main: net.schraderbrau.forceelytra.ForceElytra
+version: 1.0
+api-version: 1.19
+author: Toby Fox (112c)
+
+commands:
+  forceelytra:
+    description: Enables or disables the Elytra flight force.
+    usage: /forceelytra <enable|disable>
+    permission: schrader.elytra.admin
+
+permissions:
+  schrader.elytra.admin:
+    description: Allows the player to enable or disable Elytra flight force.
+    default: op
