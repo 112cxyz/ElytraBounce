@@ -1,5 +1,6 @@
 {
     "github-actions.workflows.pinned.workflows": [
         ".github/workflows/maven-publish.yml"
-    ]
+    ],
+    "java.configuration.updateBuildConfiguration": "interactive"
 }

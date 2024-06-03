@@ -58,3 +58,5 @@ docs/
 
 # Ignore custom ignore patterns
 # Add your own custom ignore patterns here
+target/
+.devcontainer
