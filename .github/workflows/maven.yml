@@ -6,10 +6,9 @@ on:
 
 jobs:
   build:
-    permissions:
-      contents: write
-      discussions: write
+
     runs-on: ubuntu-latest
+
     steps:
     - uses: actions/checkout@v2
 
@@ -22,11 +21,29 @@ jobs:
     - name: Clean and Build with Maven
       run: mvn clean package
 
+    - name: Get latest tag
+      id: get_tag
+      run: |
+        echo ::set-output name=tag::$(git describe --tags --abbrev=0)
+
+    - name: Extract version number
+      id: extract_version
+      run: |
+        TAG=${{ steps.get_tag.outputs.tag }}
+        VERSION=${TAG#v}
+        echo "::set-output name=version::$VERSION"
+
+    - name: Increment version
+      id: increment_version
+      run: |
+        NEXT_VERSION=$(( ${{ steps.extract_version.outputs.version }} + 1 ))
+        echo "::set-output name=next_version::$NEXT_VERSION"
+
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v1
       with:
-        name: Release ${{ github.ref }}
-        tag_name: ${{ github.ref }}
+        name: Release v1.0.${{ steps.increment_version.outputs.next_version }}
+        tag_name: v1.0.${{ steps.increment_version.outputs.next_version }}
         files: target/ForceElytra-1.0-SNAPSHOT.jar
         body: |
           This is an automatic release created by GitHub Actions.
