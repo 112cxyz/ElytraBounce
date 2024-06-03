@@ -33,12 +33,13 @@ jobs:
         route: GET /repos/${{ github.repository }}/releases/latest
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - name: Print latest release info
-      run: echo "${{ toJson(steps.get_latest_release.outputs) }}
+    - name: Print latest release URL
+      run: echo "The latest release URL is ${{ steps.get_latest_release.outputs.data.url }}"
+      
     - name: Upload Release Asset
       uses: actions/upload-release-asset@v1
       with:
-        upload_url: ${{ steps.get_latest_release.outputs.upload_url }}
+        upload_url: ${{ steps.get_latest_release.outputs.data.upload_url }}
         asset_path: ./target/ForceElytra-1.0-SNAPSHOT-jar-with-dependencies.jar
         asset_name: ForceElytra-1.0-SNAPSHOT.jar
         asset_content_type: application/java-archive
