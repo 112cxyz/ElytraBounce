@@ -7,11 +7,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-      id-token: write # Necessary for authentication
-      actions: write # Necessary for uploading release assets
+    permissions: write-all
 
     steps:
     - uses: actions/checkout@v4
