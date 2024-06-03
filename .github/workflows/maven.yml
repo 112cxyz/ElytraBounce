@@ -31,9 +31,7 @@ jobs:
         tag_name: v1.0.0
         release_name: Release 1.0.0
         body: |
-          Changes in this release:
-          - Include feature X
-          - Fix issue Y
+          AutoRelease!
         draft: false
         prerelease: false
 
