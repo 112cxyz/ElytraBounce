@@ -57,13 +57,13 @@ public class ElytraListener implements Listener {
             // Check if the clicked item is the Elytra
             if (plugin.isForceElytraEnabled() && clickedItem != null && clickedItem.getType() == Material.ELYTRA && hasBoundElytra(player)) {
                 event.setCancelled(true);
-                player.sendMessage("You cannot remove the bound Elytra.");
+                player.sendMessage("[Elytra Bounce] You cannot remove the bound Elytra.");
             }
 
             // Check if the clicked item is the boost feather
             if (plugin.isBoostItem(clickedItem)) {
                 event.setCancelled(true);
-                player.sendMessage("You cannot move the Boost Feather. It has been moved back to the first slot.");
+                player.sendMessage("[Elytra Bounce] You cannot move the Boost Feather. It has been moved back to the first slot.");
                 player.getInventory().removeItem(clickedItem);
                 ItemStack firstSlotItem = player.getInventory().getItem(0);
 
