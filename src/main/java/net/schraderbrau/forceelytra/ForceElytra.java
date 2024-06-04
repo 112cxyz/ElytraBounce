@@ -13,9 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class ForceElytra extends JavaPlugin {
 
@@ -95,6 +93,12 @@ public class ForceElytra extends JavaPlugin {
         ItemMeta meta = boostItem.getItemMeta();
         if (meta != null) {
             meta.setDisplayName("Boost Feather");
+
+            // Add lore
+            List<String> lore = new ArrayList<>();
+            lore.add("Press Right Click to Boost (45 Sec Cooldown)");
+            meta.setLore(lore);
+
             boostItem.setItemMeta(meta);
             player.getInventory().setItem(0, boostItem); // Place boost item in slot 1
         }
@@ -129,7 +133,7 @@ public class ForceElytra extends JavaPlugin {
         cooldowns.put(playerId, System.currentTimeMillis());
 
         BossBar bossBar = bossBars.computeIfAbsent(playerId, k -> {
-            BossBar bar = Bukkit.createBossBar("Boost Cooldown", BarColor.RED, BarStyle.SEGMENTED_10);
+            BossBar bar = Bukkit.createBossBar("Boost Cooldown", BarColor.RED, BarStyle.SOLID);
             bar.setVisible(true);
             return bar;
         });

@@ -9,6 +9,7 @@ import org.bukkit.event.player.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.event.block.Action;
 
 public class ElytraListener implements Listener {
 
@@ -60,12 +61,14 @@ public class ElytraListener implements Listener {
         }
     }
 
+
+
     @EventHandler
     public void onPlayerDropItem(PlayerDropItemEvent event) {
         ItemStack droppedItem = event.getItemDrop().getItemStack();
         if (isBoostItem(droppedItem)) {
             event.setCancelled(true);
-            giveBoostItem(event.getPlayer());
+            plugin.giveBoostItem(event.getPlayer());
         }
     }
 
@@ -74,7 +77,7 @@ public class ElytraListener implements Listener {
         if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             ItemStack itemInHand = event.getItem();
             if (isBoostItem(itemInHand)) {
-                useBoostItem(event.getPlayer());
+                plugin.useBoostItem(event.getPlayer());
             }
         }
     }
