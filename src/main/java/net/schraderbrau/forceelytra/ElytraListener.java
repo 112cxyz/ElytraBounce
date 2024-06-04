@@ -5,9 +5,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -60,6 +58,29 @@ public class ElytraListener implements Listener {
                 player.sendMessage("You cannot remove the bound Elytra.");
             }
         }
+    }
+
+    @EventHandler
+    public void onPlayerDropItem(PlayerDropItemEvent event) {
+        ItemStack droppedItem = event.getItemDrop().getItemStack();
+        if (isBoostItem(droppedItem)) {
+            event.setCancelled(true);
+            giveBoostItem(event.getPlayer());
+        }
+    }
+
+    @EventHandler
+    public void onPlayerInteract(PlayerInteractEvent event) {
+        if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            ItemStack itemInHand = event.getItem();
+            if (isBoostItem(itemInHand)) {
+                useBoostItem(event.getPlayer());
+            }
+        }
+    }
+
+    public boolean isBoostItem(ItemStack item) {
+        return item != null && item.getType() == Material.FEATHER && item.getItemMeta() != null && "Boost Feather".equals(item.getItemMeta().getDisplayName());
     }
 
     private void giveBoundElytra(Player player) {
