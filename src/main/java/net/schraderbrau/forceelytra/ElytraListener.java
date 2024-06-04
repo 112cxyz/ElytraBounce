@@ -37,6 +37,7 @@ public class ElytraListener implements Listener {
         Player player = event.getPlayer();
         if (plugin.isForceElytraEnabled()) {
             giveBoundElytra(player);
+
         }
     }
 
@@ -50,18 +51,36 @@ public class ElytraListener implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        if (plugin.isForceElytraEnabled() && event.getWhoClicked() instanceof Player) {
-            Player player = (Player) event.getWhoClicked();
-            ItemStack currentItem = event.getCurrentItem();
+        if (event.getWhoClicked() instanceof Player player) {
+            ItemStack clickedItem = event.getCurrentItem();
 
-            if (currentItem != null && currentItem.getType() == Material.ELYTRA && hasBoundElytra(player)) {
+            // Check if the clicked item is the Elytra
+            if (plugin.isForceElytraEnabled() && clickedItem != null && clickedItem.getType() == Material.ELYTRA && hasBoundElytra(player)) {
                 event.setCancelled(true);
                 player.sendMessage("You cannot remove the bound Elytra.");
             }
+
+            // Check if the clicked item is the boost feather
+            if (plugin.isBoostItem(clickedItem)) {
+                event.setCancelled(true);
+                player.sendMessage("You cannot move the Boost Feather. It has been moved back to the first slot.");
+                player.getInventory().removeItem(clickedItem);
+                ItemStack firstSlotItem = player.getInventory().getItem(0);
+
+                if (firstSlotItem != null && !plugin.isBoostItem(firstSlotItem)) {
+                    // Find an empty slot
+                    int emptySlot = player.getInventory().firstEmpty();
+                    if (emptySlot != -1) {
+                        // Move the item in the first slot to the empty slot
+                        player.getInventory().setItem(emptySlot, firstSlotItem);
+                    }
+                }
+
+                // Add the boost feather back to the first slot
+                player.getInventory().setItem(0, clickedItem);
+            }
         }
     }
-
-
 
     @EventHandler
     public void onPlayerDropItem(PlayerDropItemEvent event) {

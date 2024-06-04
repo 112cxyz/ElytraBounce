@@ -121,6 +121,41 @@ public class ForceElytra extends JavaPlugin {
         }
     }
 
+    public boolean isBoostItem(ItemStack item) {
+        if (item == null || item.getType() != Material.FEATHER || !item.hasItemMeta()) {
+            return false;
+        }
+
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null || !meta.hasDisplayName() || !meta.hasLore()) {
+            return false;
+        }
+
+        String displayName = meta.getDisplayName();
+        List<String> lore = meta.getLore();
+
+        return "Boost Feather".equals(displayName) && lore != null && lore.contains("Press Right Click to Boost (45 Sec Cooldown)");
+    }
+
+    public boolean hasBoostItem(Player player) {
+        ItemStack boostItem = new ItemStack(Material.FEATHER);
+        ItemMeta meta = boostItem.getItemMeta();
+        if (meta != null) {
+            meta.setDisplayName("Boost Feather");
+            List<String> lore = new ArrayList<>();
+            lore.add("Press Right Click to Boost (45 Sec Cooldown)");
+            meta.setLore(lore);
+            boostItem.setItemMeta(meta);
+        }
+
+        for (ItemStack item : player.getInventory().getContents()) {
+            if (item != null && item.isSimilar(boostItem)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean isOnCooldown(UUID playerId) {
         if (!cooldowns.containsKey(playerId)) {
             return false;
