@@ -36,16 +36,8 @@ public class ElytraListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         if (plugin.isForceElytraEnabled()) {
-            giveBoundElytra(player);
-
-        }
-    }
-
-    @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent event) {
-        Player player = event.getPlayer();
-        if (plugin.isForceElytraEnabled()) {
-            player.setGliding(false);
+            plugin.giveElytra(player);
+            plugin.giveBoostItem(player); // Give the boost item to the player
         }
     }
 
